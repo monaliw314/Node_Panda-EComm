@@ -1,0 +1,49 @@
+[
+    {
+        "_id": {
+          "$oid": "64b7a20a4b7c79d13c233f47"
+        },
+        "title": "Singa Days Scented Candle Set |#SingaporInspired",
+        "desc": "Lay back and unwind your senses with the  Singa Days scented candle gift set. This set comes with relaxing fragrances of Peony  and white thyme . Compact and unique fragrancesm, makes these candles a perfect gift and for your me-time.",
+        "price": "1295.00",
+        "image": ""
+    },
+    {
+        "_id": {
+          "$oid": "64b7a2fd4b7c79d13c233f48"
+        },
+        "title": "Planter - Teal",
+        "desc": "This ‘OWLsome’ Planter is an awesome way to add some green corners to your home! You can add this ceramic planter to your side tables in the living room, consoles, bookshelves, powder rooms or kitchen shelves for that pop of colour!",
+        "price": "1045.00",
+        "image": ""
+    },
+    {
+        "_id": {
+          "$oid": "64b77cb24b7c79d13c233f3c"
+        },
+        "title": "Love at first bite snak jar ",
+        "desc": "Panda's 'Love at First Bite' Snack Tin is a perfect for someone who loves to snack! It is airtight, food-grade safe, travel friendly, and looks lovely in any storage cabinet or shelf. A storage must-haves for all homes, who love their candies, cookies and other snacks; this vibrant tin box can store pretty much everything!",
+        "price": "995.00",
+        "image": ""
+    },
+    {
+        "_id": {
+          "$oid": "64b77cd74b7c79d13c233f3d"
+        },
+        "title": "Flower Lady Steel Bottle",
+        "desc": "Our Flower Lady Bottle is sure to keep things cool and colourful. Made of cooling stainless steel & handpainted by artisans in Kashmir, this bottle comes with a capacity of 900 ml which is easy to use and carry around. Perfect for your everyday office use, and as a gift set along with a tumbler.",
+        "price": "1695.00",
+        "image": "",
+        "category":"Kitchen_&_Dining"
+    },
+    {
+        "_id": {
+          "$oid": "64b77cf44b7c79d13c233f3e"
+        },
+        "title": "Folk Funk Coaster set",
+        "desc": "Statement coasters are such a mood! Chumbak's exclusively designed Folk Funk set comes with funky prints that are sure to add a vibe to your tablescape. Reliable, sturdy and available in a set of 6, this coaster set is digitally printed and made of MDF.  These coasters make for a perfect housewarming gift as well!",
+        "price": "695.00",
+        "image": "",
+        "category":"Kitchen_&_Dining"
+    }
+]
