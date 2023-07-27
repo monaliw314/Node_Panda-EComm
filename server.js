@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const {MongoClient} = require('mongodb');
 const  ObjectID = require('mongodb').ObjectId;
 const cors = require('cors')
@@ -7,12 +8,56 @@ const url = 'mongodb://0.0.0.0:27017/';
 const client = new MongoClient(url);
 const database = 'E-comm';
 const db = client.db(database);
-
+const secretKey = "secretkey";
 app.use(cors()); //middleware to handle cors error
 app.use(express.json());
 
+// api to login
+app.post('/login',async (req,res)=>{
+    //const {username,password} = req.body;
+    const userData = {
+        'username' : req.body.username,
+        'password' : req.body.password
+    }
+    const result = await db.collection('user').findOne(userData);
+    if(!result) return res.status(403).json("Authentication failed");
+    jwt.sign({userId: result._id},secretKey,{expiresIn: '500s'},(err,token)=>{
+        if (err) {
+            res.status(500).json({ error: 'Failed to generate token' });
+        } else {
+            res.json(
+                { token: token ,
+                  role : result.role
+                }
+            );
+        }
+    })
+})
+
+// dummy api to check varification token
+app.post('/profile',verifyToken ,(req,res)=>{
+    res.json("success");
+})
+
+//function to verify authentication token
+function verifyToken(req,res,next){
+    const token = req.headers['x-access-token'];
+    if(!token)
+        return res.status(403).send("Authorization token required");
+    jwt.verify(token,secretKey,(err,data)=>{
+        if(err){
+            res.send({
+                result : "invalid token"
+            })
+        }else{
+            next();
+        }
+    })
+}
+
+
 //api to get all items from product collection
-app.get('/get-all-products',async (req,res)=>{
+app.get('/get-all-products',verifyToken,async (req,res)=>{
     try{
         let data = await db.collection('Products').find({}).toArray();
         res.json(data);
@@ -24,7 +69,7 @@ app.get('/get-all-products',async (req,res)=>{
 
 //api to get all items if category is specified
 
-app.get('/get-product/:category',async (req,res)=>{
+app.get('/get-product/:category',verifyToken,async (req,res)=>{
     try{
         const category = req.params.category; 
         let data = await db.collection('Products').find({category}).toArray();
@@ -36,7 +81,7 @@ app.get('/get-product/:category',async (req,res)=>{
 });
 
 
-app.get('/get-item',async (req,res)=>{
+app.get('/get-item',verifyToken,async (req,res)=>{
     try{
         const id = req.query.id; 
         const category = req.query.category;
@@ -60,7 +105,7 @@ app.get('/get-item',async (req,res)=>{
 });
 
 // api to get product by id
-app.get('/get-product-by-id/:id',async (req,res)=>{
+app.get('/get-product-by-id/:id',verifyToken,async (req,res)=>{
     const id = req.params.id; 
     try{
         console.log('Requested ID:', id);
@@ -73,7 +118,7 @@ app.get('/get-product-by-id/:id',async (req,res)=>{
 });
 
 //api to update item in product collection
-app.put('/:id',async (req,res) =>{
+app.put('/update-product/:id',verifyToken,async (req,res) =>{
    const id = req.params.id;
    const updateData = req.body;
    try{
@@ -94,10 +139,11 @@ app.put('/:id',async (req,res) =>{
 });
 
 //api to post item in product collection
-app.post('/post-product', async (req,res) =>{
+app.post('/post-product',verifyToken, async (req,res) =>{
     try{
         const newProduct = req.body;
         delete newProduct._id;
+        console.log(newProduct);
         const result = await db.collection('Products').insertOne(newProduct);
         res.status(201).json({message :'Data added successfully'});
     }catch(e){
@@ -107,7 +153,8 @@ app.post('/post-product', async (req,res) =>{
 });
 
 //api to delete item from product collection
-app.delete('/:id',async(req,res)=>{
+app.delete('/delete-product/:id',verifyToken,async(req,res)=>{
+    console.log(req.params);
     const id = req.params.id;
     try {
         const result= await db.collection('Products').deleteOne( { _id : new ObjectID(id) } );
